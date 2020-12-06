@@ -48,9 +48,12 @@ Install NGINX:
 
 ```shell
 helm install nginx ingress-nginx/ingress-nginx \
-     --set controller.replicaCount=2 \
-     -f config/ingress-annotations.yaml \
-     -n $INGRESS_NAMESPACE
+    -f config/ingress-annotations.yaml \
+    --set controller.replicaCount=2 \
+    --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux \
+    --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux \
+    --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux \
+    --namespace $INGRESS_NAMESPACE
 ```
 
 And wait for the deployment to finish:
